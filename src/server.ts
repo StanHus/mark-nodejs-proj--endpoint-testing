@@ -85,4 +85,36 @@ app.get("/quest/start/impossible", (req, res) => {
   });
 });
 
+app.get("/quest/start/hard", (req, res) => {
+  res.json({
+    location: "Ukraine",
+    speech: {
+      speaker: {
+        name: "President-Comedian",
+        description: "A short but fierce looking demon-thing is pretty much on the nose here",
+      },
+      text: "You will spent the remainder of your days in this hostile country, which is the base location and inspiration for the Mad Max saga",
+    },
+    options: {
+      restart: "/",
+    },
+  });
+});
+
+app.get("/quest/start/easy", (req, res) => {
+  res.json({
+    location: "UK",
+    speech: {
+      speaker: {
+        name: "Jenny, the local counselor",
+        description: "A pleasant lady with a nice perfume",
+      },
+      text: "You are gonna be living here, a socialist-leaning country that tries to look after everyone but those who pay taxes",
+    },
+    options: {
+      restart: "/",
+    },
+  });
+});
+
 export default app;
