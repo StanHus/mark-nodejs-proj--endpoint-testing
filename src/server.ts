@@ -69,4 +69,20 @@ app.get("/quest/decline", (req, res) => {
   });
 });
 
+app.get("/quest/start/impossible", (req, res) => {
+  res.json({
+    location: "Apocalypse",
+    speech: {
+      speaker: {
+        name: "Titan, Destroyer of Worlds",
+        description: "A short but fierce looking demon-thing",
+      },
+      text: "Thats instant excruciating death by a fireball from a fierce dragon, mate",
+    },
+    options: {
+      restart: "/",
+    },
+  });
+});
+
 export default app;
