@@ -97,6 +97,24 @@ app.get("/quest/start/hard", (req, res) => {
     },
     options: {
       restart: "/",
+      employment: "/quest/start/hard/employment"
+    },
+  });
+});
+
+app.get("/quest/start/hard/employment", (req, res) => {
+  res.json({
+    location: "Ukraine",
+    speech: {
+      speaker: {
+        name: "Dimitri, the mobster",
+        description: "A tall thin man smoking a cigar",
+      },
+      text: "(*in a thick Russian accent*) I beliEve ve can aRRange sumting",
+    },
+    options: {
+      restart: "/",
+      switchLevel: "/quest/start/easy"
     },
   });
 });
@@ -110,6 +128,39 @@ app.get("/quest/start/easy", (req, res) => {
         description: "A pleasant lady with a nice perfume",
       },
       text: "You are gonna be living here, a socialist-leaning country that tries to look after everyone but those who pay taxes",
+    },
+    options: {
+      restart: "/",
+      employment: "/quest/start/easy/employment"
+    },
+  });
+});
+
+app.get("/quest/start/easy/employment", (req, res) => {
+  res.json({
+    location: "UK",
+    speech: {
+      speaker: {
+        name: "Frederick, a recruitment agent",
+        description: "A funny guy with a wide smile",
+      },
+      text: "Hi there, lets get you set up and get you contributing to other people's unemployment benefits fund",
+    },
+    options: {
+      restart: "/",
+      startWork: "/quest/start/easy/employment/work"
+    },
+  });
+});
+
+app.get("/quest/start/easy/employment/work", (req, res) => {
+  res.json({
+    location: "UK",
+    speech: {
+      speaker: {
+        name: "Boss",
+      },
+      text: "Take your time",
     },
     options: {
       restart: "/",

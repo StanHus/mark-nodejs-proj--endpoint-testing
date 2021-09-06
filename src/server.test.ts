@@ -37,36 +37,22 @@ test("GET /help explains how it works", async () => {
 
 test("GET /quest/accept has our mysterious robed figure give a couple of further choices", async () => {
   const response = await supertest(app).get("/quest/accept");
-
-  // check the speaker and location are right
   expect(response.body).toMatchObject({
     location: CAVE_EXTERIOR,
     speech: {
       speaker: MYSTERIOUS_ROBED_FIGURE,
     },
   });
-
-  // check the robed figure is saying something
   expect(typeof response.body.speech.text).toBe("string");
-
-  // check that there are at least two further options
   expect(Object.keys(response.body.options).length).toBeGreaterThanOrEqual(2);
 });
 
 test("GET /quest/decline responds with an apocalyptic message", async () => {
   const response = await supertest(app).get("/quest/decline");
-
-  // located in the apocalypse
   expect(response.body.location).toBe("Apocalypse");
-
-  // aggro speaker
   expect(response.body.speech.speaker.name).toBe("Titan, Destroyer of Worlds");
-
-  // some aggro message
   expect(response.body.speech.text).toMatch("FOOL");
   expect(response.body.speech.text).toMatch(/mistake/i);
-
-  // only includes the option to restart
   expect(response.body.options).toStrictEqual({ restart: "/" });
 });
 
@@ -90,6 +76,16 @@ test("GET /quest/start/hard gets you into quiet a pickle", async () => {
   expect(response.body.options).toMatchObject({ restart: "/" });
 });
 
+test("GET /quest/start/hard/employment gives you your main career prospect", async () => {
+  const response = await supertest(app).get("/quest/start/hard/employment");
+  expect(response.body.location).toBe("Ukraine");
+  expect(response.body.speech.speaker.name).toMatch(/Dimitri/i);
+  expect(response.body.speech.speaker.description).toMatch("cigar");
+  expect(response.body.speech.text).toMatch(/arrange/i);
+  expect(response.body.speech.text).toMatch(/Russian/i);
+  expect(response.body.options).toMatchObject({ restart: "/", switchLevel: "/quest/start/easy" });
+});
+
 test("GET /quest/start/easy gives you a game on easy mode pretty much", async () => {
   const response = await supertest(app).get("/quest/start/easy");
   expect(response.body.location).toMatch("UK");
@@ -98,5 +94,24 @@ test("GET /quest/start/easy gives you a game on easy mode pretty much", async ()
   expect(response.body.speech.text).toMatch(/socialist/i);
   expect(response.body.speech.text).toMatch(/taxes/i);
   expect(response.body.options).toMatchObject({ restart: "/" });
+});
+
+test("GET /quest/start/easy/employment gives you your main career prospects in this socialist state", async () => {
+  const response = await supertest(app).get("/quest/start/easy/employment");
+  expect(response.body.location).toBe("UK");
+  expect(response.body.speech.speaker.name).toMatch(/recruitment/i);
+  expect(response.body.speech.speaker.description).toMatch("smile");
+  expect(response.body.speech.text).toMatch(/up/i);
+  expect(response.body.speech.text).toMatch(/benefits/i);
+  expect(response.body.options).toMatchObject({ restart: "/", startWork: "/quest/start/easy/employment/work" });
+});
+
+test("GET /quest/start/easy/employment/work gives you your respectful work interactions", async () => {
+  const response = await supertest(app).get("/quest/start/easy/employment/work");
+  expect(response.body.location).toBe("UK");
+  expect(response.body.speech.speaker.name).toMatch(/BOSS/i);
+  expect(response.body.speech.text).toMatch(/TAKE/i);
+  expect(response.body.speech.text).toMatch(/tIME/i);
+  expect(response.body.options).toMatchObject({ restart: "/"});
 });
 
